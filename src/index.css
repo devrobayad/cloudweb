@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+
+  /* Corporate Brand Color variables mapping */
+  --color-brand-light: #3A9AD9;
+  --color-brand-medium: #2E6FA8;
+  --color-brand-dark: #243D7A;
+
+  /* Overrides for standard Tailwind classes to automatically match your color scheme */
+  --color-indigo-50: #f0f7fb;
+  --color-indigo-100: #e0f0f8;
+  --color-indigo-200: #bae0f3;
+  --color-indigo-300: #8ecdef;
+  --color-indigo-400: #3A9AD9;
+  --color-indigo-500: #2E6FA8; /* Main - Medium Blue */
+  --color-indigo-600: #243D7A; /* Darker Main Blue for Hover */
+  --color-indigo-700: #1b456a; /* Extra Dark Blue */
+  --color-indigo-800: #122e47;
+  --color-indigo-900: #0a1b2a;
+  --color-indigo-950: #050e15;
+
+  --color-blue-500: #2E6FA8;
+  --color-blue-600: #243D7A;
+  --color-blue-700: #1b456a;
+  
+  --color-violet-500: #2E6FA8;
+  --color-violet-600: #243D7A;
+  --color-violet-700: #1b456a;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans) !important;
+  font-size: 16px !important; /* Elegant 16px standard for laptop/small display devices */
+}
+
+@media (min-width: 1440px) {
+  html {
+    font-size: 18px !important; /* Scales to 18px for large 22"+ screen real estate */
+  }
+}
+
+/* Apply ui-sans-serif, system-ui, sans-serif font family globally to all elements */
+*, *::before, *::after {
+  font-family: ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Custom layout container override to occupy 90% structure width on wide viewports with a solid max-width safety limit */
+@media (min-width: 1024px) {
+  .max-w-7xl {
+    width: 90% !important;
+    max-width: 1360px !important;
+  }
+}
+
+/* Global <p> tag font size override to 16px (ফন্ট সাইজ ১৬ পিক্সেল) */
+p, p * {
+  font-size: 16px !important;
+}
+
+/* Global <span> tag size fixed to 14px (সকল স্প্যান ট্যাগের সাইজ ১৪ পিক্সেল) */
+span {
+  font-size: 14px !important;
+}
+
+/* Global <label> tag size fixed to 14px (সকল লেবেল ট্যাগের সাইজ ১৪ পিক্সেল) */
+label, label * {
+  font-size: 14px !important;
+}
+
+/* Global Footer text, links, and list items to 16px (ফুটারের সকল টেক্সট ও লিংক ১৬ পিক্সেল) */
+#footer,
+#footer p,
+#footer a,
+#footer button,
+#footer span,
+#footer li {
+  font-size: 16px !important;
+}
+
+/* Header navigation links, sub-navigation links, dropdown texts, and header buttons to exactly 16px (হেডারের সকল লিংক, সাব-লিংক ও বাটনের সাইজ ১৬ পিক্সেল) */
+header nav a,
+header nav button,
+header nav a *,
+header nav button *,
+div[class*="bg-[#16143c]"] nav a,
+div[class*="bg-[#16143c]"] nav button,
+div[class*="bg-[#16143c]"] nav a *,
+div[class*="bg-[#16143c]"] nav button *,
+div[class*="bg-[#243D7A]"] nav a,
+div[class*="bg-[#243D7A]"] nav button,
+div[class*="bg-[#243D7A]"] nav a *,
+div[class*="bg-[#243D7A]"] nav button * {
+  font-size: 16px !important;
+}
+
+@media (min-width: 1280px) and (max-width: 1440px) {
+  header nav a,
+  header nav button,
+  header nav a *,
+  header nav button *,
+  div[class*="bg-[#16143c]"] nav a,
+  div[class*="bg-[#16143c]"] nav button,
+  div[class*="bg-[#16143c]"] nav a *,
+  div[class*="bg-[#16143c]"] nav button *,
+  div[class*="bg-[#243D7A]"] nav a,
+  div[class*="bg-[#243D7A]"] nav button,
+  div[class*="bg-[#243D7A]"] nav a *,
+  div[class*="bg-[#243D7A]"] nav button * {
+    font-size: 16px !important;
+  }
+  header nav a {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  header nav {
+    gap: 3px !important;
+  }
+}
+
+/* Slider CTA buttons, navigation buttons, and text color to exactly #ffffff (স্লাইডারের সকল বাটনের টেক্সট কালার সাদা) */
+#home a,
+#home button,
+#home a *,
+#home button * {
+  color: #ffffff !important;
+}
+
+/* Highly targeted CSS selector rule added for user selected element */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1),
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1),
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
+  font-size: 44px !important;
+}
+
+/* Responsive margins for targeted background image collage to prevent layout breaking across desktop viewports */
+@media (min-width: 1280px) {
+  div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-right: 230px !important;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-right: 32px !important;
+    max-width: 200px !important;
+    max-height: 200px !important;
+    bottom: 20px !important;
+  }
+}
+
+/* Explicit margin override for the selected first about section image collage */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) {
+  margin-right: 80px !important;
+}
+
+/* Explicit margin override for the selected second about section image collage */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section#about:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) {
+  margin-right: 80px !important;
+}
+
+/* Width overrides for the selected elements in focus mode */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section#about:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(4) {
+  width: 600px !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > section#about:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(4) > button:nth-of-type(1) {
+  width: 200px !important;
+}
+
+
+
+
