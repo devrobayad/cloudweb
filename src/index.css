@@ -122,6 +122,85 @@ div[class*="bg-[#243D7A]"] nav button * {
   }
 }
 
+@media (min-width: 1024px) and (max-width: 1169px) {
+  header nav a,
+  header nav button,
+  header nav a *,
+  header nav button *,
+  div[class*="bg-[#16143c]"] nav a,
+  div[class*="bg-[#16143c]"] nav button,
+  div[class*="bg-[#16143c]"] nav a *,
+  div[class*="bg-[#16143c]"] nav button *,
+  div[class*="bg-[#243D7A]"] nav a,
+  div[class*="bg-[#243D7A]"] nav button,
+  div[class*="bg-[#243D7A]"] nav a *,
+  div[class*="bg-[#243D7A]"] nav button * {
+    font-size: 13px !important;
+  }
+  header nav a {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  header nav {
+    gap: 2px !important;
+  }
+  header nav a[class*="bg-"] {
+    margin-left: 6px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+}
+
+@media (min-width: 1170px) and (max-width: 1200px) {
+  header nav a,
+  header nav button,
+  header nav a *,
+  header nav button *,
+  div[class*="bg-[#16143c]"] nav a,
+  div[class*="bg-[#16143c]"] nav button,
+  div[class*="bg-[#16143c]"] nav a *,
+  div[class*="bg-[#16143c]"] nav button *,
+  div[class*="bg-[#243D7A]"] nav a,
+  div[class*="bg-[#243D7A]"] nav button,
+  div[class*="bg-[#243D7A]"] nav a *,
+  div[class*="bg-[#243D7A]"] nav button * {
+    font-size: 14px !important;
+  }
+  header nav a {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  header nav {
+    gap: 3px !important;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1269px) {
+  header nav a,
+  header nav button,
+  header nav a *,
+  header nav button *,
+  div[class*="bg-[#16143c]"] nav a,
+  div[class*="bg-[#16143c]"] nav button,
+  div[class*="bg-[#16143c]"] nav a *,
+  div[class*="bg-[#16143c]"] nav button *,
+  div[class*="bg-[#243D7A]"] nav a,
+  div[class*="bg-[#243D7A]"] nav button,
+  div[class*="bg-[#243D7A]"] nav a *,
+  div[class*="bg-[#243D7A]"] nav button * {
+    font-size: 15px !important;
+  }
+  header nav a {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  header nav {
+    gap: 3px !important;
+  }
+}
+
 /* Slider CTA buttons, navigation buttons, and text color to exactly #ffffff (স্লাইডারের সকল বাটনের টেক্সট কালার সাদা) */
 #home a,
 #home button,

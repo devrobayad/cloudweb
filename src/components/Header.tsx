@@ -93,9 +93,9 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-[50px] pt-[30px]">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 md:px-[25px] xl:px-[50px] pt-4 md:pt-[20px] xl:pt-[30px]">
       {/* Top Bar for Phone, Email and Navigation Container - Floating bar layout */}
-      <div className={`w-full max-w-full bg-white shadow-md border border-slate-100 rounded-2xl transition-all duration-300 py-3.5 px-6 md:px-12 lg:px-16 flex items-center justify-between ${isScrolled ? "bg-opacity-95 backdrop-blur-md" : ""}`}>
+      <div className={`w-full max-w-full bg-white shadow-md border border-slate-100 rounded-2xl transition-all duration-300 py-3.5 px-4 md:px-8 xl:px-12 flex items-center justify-between ${isScrolled ? "bg-opacity-95 backdrop-blur-md" : ""}`}>
         {/* Logo */}
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => { 
           setIsOpen(false); 
@@ -151,12 +151,12 @@ export default function Header() {
               </a>
               {/* Dropdown Menu Indicator */}
               {item.hasDropdown && item.dropdownItems && (
-                <div className="absolute left-0 mt-2 w-64 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0 z-50">
+                <div className="absolute left-0 mt-2 w-64 bg-[#2E6FA8] border border-indigo-400 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0 z-50">
                   {item.dropdownItems.map((subItem) => (
                     <div key={subItem.name} className="relative group/sub">
                       {subItem.hasSubmenu ? (
                         <>
-                          <div className="flex items-center justify-between w-full hover:bg-slate-50 transition-colors">
+                          <div className="group/subitem flex items-center justify-between w-full hover:bg-white/10 transition-colors">
                             <a 
                               href={subItem.href} 
                               onClick={(e) => { 
@@ -177,15 +177,15 @@ export default function Header() {
                                   window.location.hash = subItem.href;
                                 }
                               }} 
-                              className="flex-1 text-left px-4 py-2.5 text-[16px] text-slate-700 hover:text-indigo-600 font-medium flex items-center justify-between"
+                              className="flex-1 text-left pl-4 pr-4 py-2.5 text-[16px] text-white font-medium flex items-center justify-between"
                             >
-                              <span>{subItem.name}</span>
-                              <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-slate-400 group-hover/sub:text-indigo-600 transition-colors" />
+                              <span className="transition-all duration-200 ml-0 group-hover/subitem:ml-2 group-hover/subitem:text-[#1ee585] inline-block">{subItem.name}</span>
+                              <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-indigo-200 group-hover/sub:text-white transition-colors" />
                             </a>
                           </div>
                           
                           {/* Nested submenu on hover */}
-                          <div className="absolute left-full top-0 ml-1 w-72 bg-white border border-slate-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 transform translate-x-1 group-hover/sub:translate-x-0 z-50">
+                          <div className="absolute left-full top-0 ml-1 w-72 bg-[#2E6FA8] border border-indigo-400 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 transform translate-x-1 group-hover/sub:translate-x-0 z-50">
                             {subItem.submenuItems?.map((nestedItem) => (
                               <a
                                 key={nestedItem.name}
@@ -208,9 +208,11 @@ export default function Header() {
                                     window.location.hash = nestedItem.href;
                                   }
                                 }}
-                                className="block px-4 py-2 text-[16px] text-slate-600 hover:bg-slate-50 hover:text-indigo-600 font-medium"
+                                className="group/nested block pl-4 pr-4 py-2 text-[16px] text-indigo-100 hover:bg-white/10 font-medium"
                               >
-                                {nestedItem.name}
+                                <span className="block transition-all duration-200 ml-0 group-hover/nested:ml-2 group-hover/nested:text-[#1ee585]">
+                                  {nestedItem.name}
+                                </span>
                               </a>
                             ))}
                           </div>
@@ -236,9 +238,11 @@ export default function Header() {
                               window.location.hash = subItem.href;
                             }
                           }} 
-                          className="block px-4 py-2.5 text-[16px] text-slate-700 hover:bg-slate-50 hover:text-indigo-600 font-medium"
+                          className="group/simple block pl-4 pr-4 py-2.5 text-[16px] text-white hover:bg-white/10 font-medium"
                         >
-                          {subItem.name}
+                          <span className="block transition-all duration-200 ml-0 group-hover/simple:ml-2 group-hover/simple:text-[#1ee585]">
+                            {subItem.name}
+                          </span>
                         </a>
                       )}
                     </div>

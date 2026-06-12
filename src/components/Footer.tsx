@@ -207,28 +207,6 @@ export default function Footer() {
                   <span className="text-white font-medium">{contact.addressBrief}</span>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white mt-0.5">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[11px] uppercase font-bold tracking-wider text-blue-105">Call Us Anytime</span>
-                  <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`} className="text-white hover:underline transition-all font-medium">
-                    {contact.phone}
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white mt-0.5">
-                  <Mail className="w-4 h-4" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[11px] uppercase font-bold tracking-wider text-blue-105">Email Address</span>
-                  <a href={`mailto:${contact.email}`} className="text-white hover:underline transition-all font-medium">
-                    {contact.email}
-                  </a>
-                </div>
-              </li>
             </ul>
           </div>
 
