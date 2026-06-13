@@ -198,14 +198,27 @@ export default function Footer() {
               <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-white" />
             </h3>
             <ul className="flex flex-col gap-3.5 text-[13.5px] text-blue-50">
-              <li className="flex items-start gap-3">
-                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white mt-0.5">
+              <li className="flex items-center gap-3">
+                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-[11px] uppercase font-bold tracking-wider text-blue-105">Corporate Office</span>
-                  <span className="text-white font-medium">{contact.addressBrief}</span>
+                <span className="text-white font-medium">{contact.addressBrief}</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white">
+                  <Phone className="w-4 h-4" />
                 </div>
+                <a href={`tel:${contact.phone}`} className="text-white font-medium hover:underline transition-colors">
+                  {contact.phone}
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="bg-white/10 p-2 rounded-lg border border-white/10 text-white">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <a href={`mailto:${contact.email}`} className="text-white font-medium hover:underline transition-colors break-all">
+                  {contact.email}
+                </a>
               </li>
             </ul>
           </div>

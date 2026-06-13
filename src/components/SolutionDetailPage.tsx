@@ -1507,366 +1507,123 @@ export default function SolutionDetailPage({ solutionId }: SolutionDetailPagePro
   const IconComponent = currentSolution.icon;
 
   // 1. Subpage Navigation Menu for Services & Solutions
-  const renderSolutionsList = () => (
-    <div id="solutions-list-nav" className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
-      <h3 className="text-slate-900 font-extrabold text-sm uppercase tracking-wider mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
-        <Briefcase className="w-4 h-4 text-indigo-600" />
-        Our Solutions
-      </h3>
-      
-      <div className="flex flex-col gap-2">
-        {[
-          "conference",
-          "sound",
-          "cctv",
-          "vas",
-          "access",
-          "telephony",
-          "datacenter",
-          "network"
-        ].map((id) => {
-          const sol = SOLUTIONS_DATA[id];
-          if (!sol) return null;
-          const isActive = sol.id === currentSolution.id;
-          const SolIcon = sol.icon;
-          
-          // Check if the current solution being viewed is one of the sub-menus of Datacenter, Network, CCTV, or Conference
-          const isDatacenterGroupActive = ["datacenter", "dcim", "ems", "nms", "server-lan", "storage"].includes(currentSolution.id);
-          const isNetworkGroupActive = ["network", "passive-lan", "fiber-optic", "dc-power", "rack-management", "raise-floor", "online-ups", "dehumidifier", "precision-cooling"].includes(currentSolution.id);
-          const isCctvGroupActive = ["cctv", "cctv-ip-analog", "cctv-anpr", "cctv-ai", "cctv-vms", "cctv-storage", "cctv-centralized"].includes(currentSolution.id);
-          const isConferenceGroupActive = ["conference", "conf-solution", "conf-meeting-room"].includes(currentSolution.id);
-          const isSoundGroupActive = ["sound", "sound-professional", "sound-ip-pa", "sound-pa"].includes(currentSolution.id);
-          const isTelephonyGroupActive = ["telephony", "telephony-pabx"].includes(currentSolution.id);
-          const isAccessGroupActive = ["access", "access-facial", "access-biometric", "access-visitor", "access-barrier", "access-hotel", "access-scanning", "access-parking"].includes(currentSolution.id);
-          const isVasGroupActive = ["vas", "vas-managed", "vas-oncall", "vas-onestop", "vas-payment"].includes(currentSolution.id);
-          const isMainDatacenter = sol.id === "datacenter";
-          const isMainNetwork = sol.id === "network";
-          const isMainCctv = sol.id === "cctv";
-          const isMainConference = sol.id === "conference";
-          const isMainSound = sol.id === "sound";
-          const isMainTelephony = sol.id === "telephony";
-          const isMainAccess = sol.id === "access";
-          const isMainVas = sol.id === "vas";
-          const shouldHighlightParent = (isMainDatacenter && isDatacenterGroupActive && !isActive) || (isMainNetwork && isNetworkGroupActive && !isActive) || (isMainCctv && isCctvGroupActive && !isActive) || (isMainConference && isConferenceGroupActive && !isActive) || (isMainSound && isSoundGroupActive && !isActive) || (isMainTelephony && isTelephonyGroupActive && !isActive) || (isMainAccess && isAccessGroupActive && !isActive) || (isMainVas && isVasGroupActive && !isActive);
+  const renderSolutionsList = () => {
+    const SUBMENU_MAPPING: Record<string, string[]> = {
+      conference: ["conf-solution", "conf-meeting-room"],
+      sound: ["sound-professional", "sound-ip-pa", "sound-pa"],
+      access: ["access-facial", "access-biometric", "access-visitor", "access-barrier", "access-hotel", "access-scanning", "access-parking"],
+      vas: ["vas-managed", "vas-oncall", "vas-onestop", "vas-payment"],
+      telephony: ["telephony-pabx"],
+      cctv: ["cctv-ip-analog", "cctv-anpr", "cctv-ai", "cctv-vms", "cctv-storage", "cctv-centralized"],
+      datacenter: ["dcim", "ems", "nms", "server-lan", "storage"],
+      network: ["passive-lan", "fiber-optic", "dc-power", "rack-management", "raise-floor", "online-ups", "dehumidifier", "precision-cooling"]
+    };
 
-          return (
-            <div key={sol.id} className="flex flex-col gap-1.5">
-              <a
-                href={`#${sol.id}`}
-                className={`flex items-center justify-between p-3 rounded-xl text-left border transition-all text-xs group ${
-                  isActive 
-                  ? "bg-indigo-600 text-white border-indigo-600 font-bold shadow-md shadow-indigo-600/10" 
-                  : shouldHighlightParent
-                  ? "bg-indigo-50 hover:bg-slate-100 text-indigo-700 border-indigo-100 font-bold"
-                  : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-100 hover:border-slate-200 font-semibold"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`p-1.5 rounded-lg ${isActive ? "bg-white/20 text-white" : shouldHighlightParent ? "bg-indigo-100 text-indigo-700 font-bold" : "bg-white text-slate-500 border border-slate-100"}`}>
-                    <SolIcon className="w-3.5 h-3.5" />
-                  </span>
-                  <span className="line-clamp-1">{sol.title}</span>
-                </div>
-                <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-              </a>
-              
-              {/* Render nested sub-items under Conference Room Solution if active */}
-              {isMainConference && isConferenceGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "conf-solution",
-                    "conf-meeting-room"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
+    return (
+      <div id="solutions-list-nav" className="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+        <h3 className="text-slate-900 font-extrabold text-sm uppercase tracking-wider mb-4 pb-3 border-b border-slate-100 flex items-center gap-2">
+          <Briefcase className="w-4 h-4 text-[#2E6FA8]" />
+          Our Solutions
+        </h3>
+        
+        <div className="flex flex-col gap-2">
+          {[
+            "network",
+            "access",
+            "datacenter",
+            "cctv",
+            "vas",
+            "sound",
+            "conference",
+            "telephony"
+          ].map((id) => {
+            const sol = SOLUTIONS_DATA[id];
+            if (!sol) return null;
+            const isActive = sol.id === currentSolution.id;
+            const SolIcon = sol.icon;
+            
+            const subItemIds = SUBMENU_MAPPING[sol.id] || [];
+            const isGroupActive = sol.id === currentSolution.id || subItemIds.includes(currentSolution.id);
+            const shouldHighlightParent = isGroupActive && !isActive;
 
-              {/* Render nested sub-items under Sound System Solution if active */}
-              {isMainSound && isSoundGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "sound-professional",
-                    "sound-ip-pa",
-                    "sound-pa"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under Access Control Solution if active */}
-              {isMainAccess && isAccessGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "access-facial",
-                    "access-biometric",
-                    "access-visitor",
-                    "access-barrier",
-                    "access-hotel",
-                    "access-scanning",
-                    "access-parking"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under Value Added Service if active */}
-              {isMainVas && isVasGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "vas-managed",
-                    "vas-oncall",
-                    "vas-onestop",
-                    "vas-payment"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under IP Telephone System if active */}
-              {isMainTelephony && isTelephonyGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "telephony-pabx"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under Enterprise CCTV Surveillance Solution if active */}
-              {isMainCctv && isCctvGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "cctv-ip-analog",
-                    "cctv-anpr",
-                    "cctv-ai",
-                    "cctv-vms",
-                    "cctv-storage",
-                    "cctv-centralized"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-100 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under Data Center Solution if Data Center Solution or any of its sub-items are active */}
-              {isMainDatacenter && isDatacenterGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "dcim",
-                    "ems",
-                    "nms",
-                    "server-lan",
-                    "storage"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-500 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3 h-3" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3 h-3 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Render nested sub-items under Enterprise Network Solution if active */}
-              {isMainNetwork && isNetworkGroupActive && (
-                <div className="ml-5 pl-4 border-l-2 border-indigo-100 flex flex-col gap-1.5 py-1 mb-1">
-                  {[
-                    "passive-lan",
-                    "fiber-optic",
-                    "dc-power",
-                    "rack-management",
-                    "raise-floor",
-                    "online-ups",
-                    "dehumidifier",
-                    "precision-cooling"
-                  ].map((subId) => {
-                    const subSol = SOLUTIONS_DATA[subId];
-                    if (!subSol) return null;
-                    const isSubActive = subSol.id === currentSolution.id;
-                    const SubIcon = subSol.icon;
-                    return (
-                      <a
-                        key={subSol.id}
-                        href={`#${subSol.id}`}
-                        className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
-                          isSubActive 
-                          ? "bg-indigo-500 text-white border-indigo-500 font-bold shadow-sm" 
-                          : "bg-white hover:bg-slate-50 text-slate-600 border-slate-100 hover:border-slate-200 font-semibold"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className={`p-1 rounded-md ${isSubActive ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-                            <SubIcon className="w-3 h-3" />
-                          </span>
-                          <span className="line-clamp-1">{subSol.title}</span>
-                        </div>
-                        <ChevronRight className={`w-3 h-3 transition-transform ${isSubActive ? "translate-x-0.5 text-white" : "text-slate-400 group-hover:translate-x-0.5"}`} />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            return (
+              <div key={sol.id} className="flex flex-col gap-1.5">
+                <a
+                  href={`#${sol.id}`}
+                  className={`flex items-center justify-between p-3 rounded-xl text-left border transition-all text-xs group ${
+                    isActive 
+                    ? "bg-[#2E6FA8] text-white border-[#2E6FA8] font-bold shadow-md shadow-indigo-600/10 hover:bg-[#243D7A] hover:border-[#243D7A]" 
+                    : shouldHighlightParent
+                    ? "bg-[#2E6FA8]/10 text-[#2E6FA8] border-[#2E6FA8]/20 font-bold hover:bg-[#243D7A] hover:text-white hover:border-[#243D7A]"
+                    : "bg-slate-50 hover:bg-[#243D7A] text-slate-700 hover:text-white border-slate-100 hover:border-[#243D7A] font-semibold"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`p-1.5 rounded-lg ${
+                      isActive 
+                        ? "bg-white/20 text-white" 
+                        : shouldHighlightParent 
+                        ? "bg-[#2E6FA8]/25 text-[#2E6FA8] font-bold group-hover:bg-white/20 group-hover:text-white" 
+                        : "bg-white text-slate-500 border border-slate-100 group-hover:bg-white/20 group-hover:text-white group-hover:border-transparent"
+                    }`}>
+                      <SolIcon className="w-3.5 h-3.5" />
+                    </span>
+                    <span className="line-clamp-1">{sol.title}</span>
+                  </div>
+                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${
+                    isActive 
+                      ? "translate-x-0.5 text-white" 
+                      : shouldHighlightParent
+                      ? "text-[#2E6FA8] group-hover:translate-x-0.5 group-hover:text-white"
+                      : "text-slate-400 group-hover:translate-x-0.5 group-hover:text-white"
+                  }`} />
+                </a>
+                
+                {/* Render nested sub-items under Solution matching the group if active */}
+                {isGroupActive && subItemIds.length > 0 && (
+                  <div className="ml-5 pl-4 border-l-2 border-[#2E6FA8]/25 flex flex-col gap-1.5 py-1 mb-1">
+                    {subItemIds.map((subId) => {
+                      const subSol = SOLUTIONS_DATA[subId];
+                      if (!subSol) return null;
+                      const isSubActive = subSol.id === currentSolution.id;
+                      const SubIcon = subSol.icon;
+                      return (
+                        <a
+                          key={subSol.id}
+                          href={`#${subSol.id}`}
+                          className={`flex items-center justify-between p-2.5 rounded-lg text-left border transition-all text-[11px] group ${
+                            isSubActive 
+                            ? "bg-[#2E6FA8] text-white border-[#2E6FA8] font-bold shadow-sm hover:bg-[#243D7A] hover:border-[#243D7A]" 
+                            : "bg-white hover:bg-[#243D7A] text-slate-600 hover:text-white border-slate-100 hover:border-[#243D7A] font-semibold"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className={`p-1 rounded-md ${
+                              isSubActive 
+                                ? "bg-white/20 text-white" 
+                                : "bg-slate-50 text-slate-400 group-hover:bg-white/20 group-hover:text-white"
+                            }`}>
+                              <SubIcon className="w-3.5 h-3.5" />
+                            </span>
+                            <span className="line-clamp-1">{subSol.title}</span>
+                          </div>
+                          <ChevronRight className={`w-3.5 h-3.5 transition-transform ${
+                            isSubActive 
+                              ? "translate-x-0.5 text-white" 
+                              : "text-slate-400 group-hover:translate-x-0.5 group-hover:text-white"
+                          }`} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // 2. Interactive consultation request form
   const renderSiteSurveyForm = () => (

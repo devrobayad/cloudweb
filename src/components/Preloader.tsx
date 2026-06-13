@@ -59,9 +59,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
   if (!preloaderEnabled || !visible) return null;
 
-  // Custom logo or Fallback Initials
-  const HeaderConfig = dataStore.getHeaderConfig();
-  const logoToShow = customLogo || HeaderConfig.logoUrl;
+  // Custom logo only (optional)
+  const logoToShow = customLogo;
 
   return (
     <div className="fixed inset-0 z-[10000] bg-slate-900 flex flex-col items-center justify-center text-white select-none transition-all duration-500 ease-in-out">

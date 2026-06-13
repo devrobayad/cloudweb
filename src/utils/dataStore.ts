@@ -445,24 +445,47 @@ const defaultHeaderMenuItems: NavItemConfig[] = [
     hasDropdown: true,
     dropdownItems: [
       { 
-        id: "4-1",
-        name: "Conference Room Solution", 
-        href: "/conference",
+        id: "4-8",
+        name: "Enterprise Network Solution", 
+        href: "/network",
         hasSubmenu: true,
         submenuItems: [
-          { id: "4-1-1", name: "Conference Solution", href: "/conf-solution" },
-          { id: "4-1-2", name: "Meeting Room Solutions", href: "/conf-meeting-room" }
+          { id: "4-8-1", name: "Passive LAN Solutions", href: "/passive-lan" },
+          { id: "4-8-2", name: "Fiber Optic Solutions", href: "/fiber-optic" },
+          { id: "4-8-3", name: "Data Center Power System", href: "/dc-power" },
+          { id: "4-8-4", name: "Rack Management Solution", href: "/rack-management" },
+          { id: "4-8-5", name: "Raise Floor System", href: "/raise-floor" },
+          { id: "4-8-6", name: "Online UPS Solution", href: "/online-ups" },
+          { id: "4-8-7", name: "Dehumidifier Solution", href: "/dehumidifier" },
+          { id: "4-8-8", name: "Precision Air Cooling solution", href: "/precision-cooling" }
         ]
       },
       { 
-        id: "4-2",
-        name: "Sound System Solution", 
-        href: "/sound",
+        id: "4-5",
+        name: "Access Control Solution", 
+        href: "/access",
         hasSubmenu: true,
         submenuItems: [
-          { id: "4-2-1", name: "Professional Sound system", href: "/sound-professional" },
-          { id: "4-2-2", name: "IP PA System", href: "/sound-ip-pa" },
-          { id: "4-2-3", name: "PA System", href: "/sound-pa" }
+          { id: "4-5-1", name: "Facial Recognition Solution", href: "/access-facial" },
+          { id: "4-5-2", name: "Bio-Metric Time Attendance Solution", href: "/access-biometric" },
+          { id: "4-5-3", name: "Visitor Management", href: "/access-visitor" },
+          { id: "4-5-4", name: "Gate Barrier Solution", href: "/access-barrier" },
+          { id: "4-5-5", name: "Hotel Series Door Lock", href: "/access-hotel" },
+          { id: "4-5-6", name: "Archway & Luggage Scanning Solution", href: "/access-scanning" },
+          { id: "4-5-7", name: "Vehicle Parking Management System", href: "/access-parking" }
+        ]
+      },
+      { 
+        id: "4-7",
+        name: "Data Center Solution", 
+        href: "/datacenter",
+        hasSubmenu: true,
+        submenuItems: [
+          { id: "4-7-1", name: "Data Center Infrastructure Management (DCIM)", href: "/dcim" },
+          { id: "4-7-2", name: "Environmental Monitoring System", href: "/ems" },
+          { id: "4-7-3", name: "Network Management System", href: "/nms" },
+          { id: "4-7-4", name: "Server/LAN Automation", href: "/server-lan" },
+          { id: "4-7-5", name: "Data Storage Solution", href: "/storage" }
         ]
       },
       { 
@@ -492,18 +515,24 @@ const defaultHeaderMenuItems: NavItemConfig[] = [
         ]
       },
       { 
-        id: "4-5",
-        name: "Access Control Solution", 
-        href: "/access",
+        id: "4-2",
+        name: "Sound System Solution", 
+        href: "/sound",
         hasSubmenu: true,
         submenuItems: [
-          { id: "4-5-1", name: "Facial Recognition Solution", href: "/access-facial" },
-          { id: "4-5-2", name: "Bio-Metric Time Attendance Solution", href: "/access-biometric" },
-          { id: "4-5-3", name: "Visitor Management", href: "/access-visitor" },
-          { id: "4-5-4", name: "Gate Barrier Solution", href: "/access-barrier" },
-          { id: "4-5-5", name: "Hotel Series Door Lock", href: "/access-hotel" },
-          { id: "4-5-6", name: "Archway & Luggage Scanning Solution", href: "/access-scanning" },
-          { id: "4-5-7", name: "Vehicle Parking Management System", href: "/access-parking" }
+          { id: "4-2-1", name: "Professional Sound system", href: "/sound-professional" },
+          { id: "4-2-2", name: "IP PA System", href: "/sound-ip-pa" },
+          { id: "4-2-3", name: "PA System", href: "/sound-pa" }
+        ]
+      },
+      { 
+        id: "4-1",
+        name: "Conference Room Solution", 
+        href: "/conference",
+        hasSubmenu: true,
+        submenuItems: [
+          { id: "4-1-1", name: "Conference Solution", href: "/conf-solution" },
+          { id: "4-1-2", name: "Meeting Room Solutions", href: "/conf-meeting-room" }
         ]
       },
       { 
@@ -513,35 +542,6 @@ const defaultHeaderMenuItems: NavItemConfig[] = [
         hasSubmenu: true,
         submenuItems: [
           { id: "4-6-1", name: "PABX & Intercom Solution", href: "/telephony-pabx" }
-        ]
-      },
-      { 
-        id: "4-7",
-        name: "Data Center Solution", 
-        href: "/datacenter",
-        hasSubmenu: true,
-        submenuItems: [
-          { id: "4-7-1", name: "Data Center Infrastructure Management (DCIM)", href: "/dcim" },
-          { id: "4-7-2", name: "Environmental Monitoring System", href: "/ems" },
-          { id: "4-7-3", name: "Network Management System", href: "/nms" },
-          { id: "4-7-4", name: "Server/LAN Automation", href: "/server-lan" },
-          { id: "4-7-5", name: "Data Storage Solution", href: "/storage" }
-        ]
-      },
-      { 
-        id: "4-8",
-        name: "Enterprise Network Solution", 
-        href: "/network",
-        hasSubmenu: true,
-        submenuItems: [
-          { id: "4-8-1", name: "Passive LAN Solutions", href: "/passive-lan" },
-          { id: "4-8-2", name: "Fiber Optic Solutions", href: "/fiber-optic" },
-          { id: "4-8-3", name: "Data Center Power System", href: "/dc-power" },
-          { id: "4-8-4", name: "Rack Management Solution", href: "/rack-management" },
-          { id: "4-8-5", name: "Raise Floor System", href: "/raise-floor" },
-          { id: "4-8-6", name: "Online UPS Solution", href: "/online-ups" },
-          { id: "4-8-7", name: "Dehumidifier Solution", href: "/dehumidifier" },
-          { id: "4-8-8", name: "Precision Air Cooling solution", href: "/precision-cooling" }
         ]
       }
     ]
@@ -740,15 +740,15 @@ const defaultDisplayStats: StatItem[] = [
   },
   {
     id: "stat-2",
-    value: "1,000+",
-    label: "Completed Projects",
-    sub: "Nationwide Deployments",
+    value: "259",
+    label: "Projects",
+    sub: "Completed Projects",
     iconName: "Briefcase"
   },
   {
     id: "stat-3",
     value: "30+",
-    label: "Product Solutions",
+    label: "Product Solution",
     sub: "End-to-End Capabilities",
     iconName: "Cpu"
   },
@@ -1255,7 +1255,14 @@ export const dataStore = {
   getTestimonials: (): TestimonialItem[] => getStored("ctl_testimonials", defaultTestimonials),
   saveTestimonials: (list: TestimonialItem[]) => setStored("ctl_testimonials", list),
 
-  getDisplayStats: (): StatItem[] => getStored("ctl_display_stats", defaultDisplayStats),
+  getDisplayStats: (): StatItem[] => {
+    let list = getStored("ctl_display_stats", defaultDisplayStats);
+    if (list && list.some(item => item.value === "1,000+")) {
+      list = [...defaultDisplayStats];
+      localStorage.setItem("ctl_display_stats", JSON.stringify(list));
+    }
+    return list;
+  },
   saveDisplayStats: (list: StatItem[]) => setStored("ctl_display_stats", list),
 
   getFloatingChats: (): FloatingChat[] => getStored("ctl_floating_chats", defaultFloatingChats),

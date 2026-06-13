@@ -38,6 +38,15 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [header, setHeader] = useState(() => dataStore.getHeaderConfig());
+  const [currentHash, setCurrentHash] = useState(() => window.location.hash || "#home");
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash || "#home");
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
@@ -120,43 +129,140 @@ export default function Header() {
 
         {/* Desktop Menu */}
         <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-nowrap">
-          {menuItems.map((item) => (
-            <div key={item.name} className="relative group">
-              <a
-                href={item.href}
-                onClick={(e) => {
-                  if (handlePageNavigationClick(item.href, e)) return;
-                  setIsOpen(false);
-                  const id = item.href.replace("#", "");
-                  
-                  // If we are navigating to a page, let hash changed router in App.tsx handle it
-                  const isPageRoute = isSubpageId(id);
-                  const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
-
-                  if (!isPageRoute && !wasPageRoute) {
-                    e.preventDefault();
-                    const element = document.getElementById(id);
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
-                    window.location.hash = item.href;
-                  } else {
-                    window.location.hash = item.href;
+          {menuItems.map((item) => {
+            const isItemActive = (() => {
+              if (currentHash === item.href) return true;
+              if (item.dropdownItems) {
+                return item.dropdownItems.some(subItem => {
+                  if (currentHash === subItem.href) return true;
+                  if (subItem.submenuItems) {
+                    return subItem.submenuItems.some(nestedItem => currentHash === nestedItem.href);
                   }
-                }}
-                className="flex items-center gap-1 px-2 py-2 2xl:px-3 text-slate-700 font-medium text-[16px] hover:text-indigo-700 transition-colors cursor-pointer whitespace-nowrap"
-              >
-                {item.name}
-                {item.hasDropdown && <ChevronDown className="w-3 h-3 text-slate-400" />}
-              </a>
-              {/* Dropdown Menu Indicator */}
-              {item.hasDropdown && item.dropdownItems && (
-                <div className="absolute left-0 mt-2 w-64 bg-[#2E6FA8] border border-indigo-400 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0 z-50">
-                  {item.dropdownItems.map((subItem) => (
-                    <div key={subItem.name} className="relative group/sub">
-                      {subItem.hasSubmenu ? (
-                        <>
-                          <div className="group/subitem flex items-center justify-between w-full hover:bg-white/10 transition-colors">
+                  return false;
+                });
+              }
+              return false;
+            })();
+
+            return (
+              <div key={item.name} className="relative group">
+                <a
+                  href={item.href}
+                  onClick={(e) => {
+                    if (handlePageNavigationClick(item.href, e)) return;
+                    setIsOpen(false);
+                    const id = item.href.replace("#", "");
+                    
+                    // If we are navigating to a page, let hash changed router in App.tsx handle it
+                    const isPageRoute = isSubpageId(id);
+                    const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
+
+                    if (!isPageRoute && !wasPageRoute) {
+                      e.preventDefault();
+                      const element = document.getElementById(id);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                      window.location.hash = item.href;
+                    } else {
+                      window.location.hash = item.href;
+                    }
+                  }}
+                  className={`relative flex items-center gap-1 px-3 py-2 2xl:px-4 font-bold text-[16px] transition-colors cursor-pointer whitespace-nowrap ${
+                    isItemActive ? "text-[#2E6FA8]" : "text-slate-700"
+                  } hover:text-[#243D7A] group-hover:text-[#243D7A]`}
+                >
+                  <span>{item.name}</span>
+                  {item.hasDropdown && (
+                    <ChevronDown className={`w-3.5 h-3.5 transition-colors ${
+                      isItemActive ? "text-[#2E6FA8]" : "text-slate-400"
+                    } group-hover:text-[#243D7A]`} />
+                  )}
+                </a>
+                {/* Modern active line under navigation item on hover with proper colors */}
+                <span className={`absolute bottom-0 left-3 right-3 h-[3px] rounded-full transform transition-all duration-300 origin-left ${
+                  isItemActive 
+                    ? "scale-x-100 bg-[#2E6FA8]" 
+                    : "scale-x-0 group-hover:scale-x-100 bg-[#243D7A]"
+                }`} />
+                {/* Dropdown Menu Indicator */}
+                {item.hasDropdown && item.dropdownItems && (
+                  <div className="absolute left-0 mt-2 w-64 bg-[#243D7A] border border-slate-100/10 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0 z-50">
+                    {item.dropdownItems.map((subItem) => {
+                      const isSubActive = currentHash === subItem.href;
+                      return (
+                        <div key={subItem.name} className="relative group/sub">
+                          {subItem.hasSubmenu ? (
+                            <>
+                              <div className={`group/subitem flex items-center justify-between w-full border-l-4 ${
+                                isSubActive ? "bg-[#2E6FA8] border-white" : "hover:bg-[#2E6FA8]/60 border-transparent hover:border-white/50"
+                              } transition-all duration-200`}>
+                                <a 
+                                  href={subItem.href} 
+                                  onClick={(e) => { 
+                                    if (handlePageNavigationClick(subItem.href, e)) return;
+                                    setIsOpen(false); 
+                                    const subId = subItem.href.replace("#", "");
+                                    const isPageRoute = isSubpageId(subId);
+                                    const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
+                                    
+                                    if (!isPageRoute && !wasPageRoute) {
+                                      e.preventDefault();
+                                      const element = document.getElementById(subId);
+                                      if (element) {
+                                        element.scrollIntoView({ behavior: "smooth" });
+                                      }
+                                      window.location.hash = subItem.href;
+                                    } else {
+                                      window.location.hash = subItem.href;
+                                    }
+                                  }} 
+                                  className="flex-1 text-left pl-3 pr-4 py-2.5 text-[16px] text-white font-medium flex items-center justify-between"
+                                >
+                                  <span className="transition-all duration-200 ml-0 group-hover/subitem:ml-2 inline-block">{subItem.name}</span>
+                                  <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-indigo-300 group-hover/subitem:text-white transition-colors" />
+                                </a>
+                              </div>
+                              
+                              {/* Nested submenu on hover */}
+                              <div className="absolute left-full top-0 ml-1 w-72 bg-[#243D7A] border border-slate-100/10 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 transform translate-x-1 group-hover/sub:translate-x-0 z-50">
+                                {subItem.submenuItems?.map((nestedItem) => {
+                                  const isNestedActive = currentHash === nestedItem.href;
+                                  return (
+                                    <a
+                                      key={nestedItem.name}
+                                      href={nestedItem.href}
+                                      onClick={(e) => {
+                                        if (handlePageNavigationClick(nestedItem.href, e)) return;
+                                        setIsOpen(false);
+                                        const nestedId = nestedItem.href.replace("#", "");
+                                        const isPageRoute = isSubpageId(nestedId);
+                                        const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
+                                        
+                                        if (!isPageRoute && !wasPageRoute) {
+                                          e.preventDefault();
+                                          const element = document.getElementById(nestedId);
+                                          if (element) {
+                                            element.scrollIntoView({ behavior: "smooth" });
+                                          }
+                                          window.location.hash = nestedItem.href;
+                                        } else {
+                                          window.location.hash = nestedItem.href;
+                                        }
+                                      }}
+                                      className={`group/nested block pl-3 pr-4 py-2 text-[16px] text-indigo-100 border-l-4 ${
+                                        isNestedActive ? "bg-[#2E6FA8] border-white" : "hover:bg-[#2E6FA8]/60 border-transparent hover:border-white/50"
+                                      } transition-all font-medium`}
+                                    >
+                                      <span className="block transition-all duration-200 ml-1 group-hover/nested:ml-2 group-hover/nested:text-white">
+                                        {nestedItem.name}
+                                      </span>
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            </>
+                          ) : (
                             <a 
                               href={subItem.href} 
                               onClick={(e) => { 
@@ -177,80 +283,23 @@ export default function Header() {
                                   window.location.hash = subItem.href;
                                 }
                               }} 
-                              className="flex-1 text-left pl-4 pr-4 py-2.5 text-[16px] text-white font-medium flex items-center justify-between"
+                              className={`group/simple block pl-3 pr-4 py-2.5 text-[16px] text-white border-l-4 ${
+                                isSubActive ? "bg-[#2E6FA8] border-white" : "hover:bg-[#2E6FA8]/60 border-transparent hover:border-white/50"
+                              } transition-all font-medium`}
                             >
-                              <span className="transition-all duration-200 ml-0 group-hover/subitem:ml-2 group-hover/subitem:text-[#1ee585] inline-block">{subItem.name}</span>
-                              <ChevronDown className="w-3.5 h-3.5 -rotate-90 text-indigo-200 group-hover/sub:text-white transition-colors" />
+                              <span className="block transition-all duration-200 ml-1 group-hover/simple:ml-2 group-hover/simple:text-white">
+                                {subItem.name}
+                              </span>
                             </a>
-                          </div>
-                          
-                          {/* Nested submenu on hover */}
-                          <div className="absolute left-full top-0 ml-1 w-72 bg-[#2E6FA8] border border-indigo-400 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 transform translate-x-1 group-hover/sub:translate-x-0 z-50">
-                            {subItem.submenuItems?.map((nestedItem) => (
-                              <a
-                                key={nestedItem.name}
-                                href={nestedItem.href}
-                                onClick={(e) => {
-                                  if (handlePageNavigationClick(nestedItem.href, e)) return;
-                                  setIsOpen(false);
-                                  const nestedId = nestedItem.href.replace("#", "");
-                                  const isPageRoute = isSubpageId(nestedId);
-                                  const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
-                                  
-                                  if (!isPageRoute && !wasPageRoute) {
-                                    e.preventDefault();
-                                    const element = document.getElementById(nestedId);
-                                    if (element) {
-                                      element.scrollIntoView({ behavior: "smooth" });
-                                    }
-                                    window.location.hash = nestedItem.href;
-                                  } else {
-                                    window.location.hash = nestedItem.href;
-                                  }
-                                }}
-                                className="group/nested block pl-4 pr-4 py-2 text-[16px] text-indigo-100 hover:bg-white/10 font-medium"
-                              >
-                                <span className="block transition-all duration-200 ml-0 group-hover/nested:ml-2 group-hover/nested:text-[#1ee585]">
-                                  {nestedItem.name}
-                                </span>
-                              </a>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <a 
-                          href={subItem.href} 
-                          onClick={(e) => { 
-                            if (handlePageNavigationClick(subItem.href, e)) return;
-                            setIsOpen(false); 
-                            const subId = subItem.href.replace("#", "");
-                            const isPageRoute = isSubpageId(subId);
-                            const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
-                            
-                            if (!isPageRoute && !wasPageRoute) {
-                              e.preventDefault();
-                              const element = document.getElementById(subId);
-                              if (element) {
-                                element.scrollIntoView({ behavior: "smooth" });
-                              }
-                              window.location.hash = subItem.href;
-                            } else {
-                              window.location.hash = subItem.href;
-                            }
-                          }} 
-                          className="group/simple block pl-4 pr-4 py-2.5 text-[16px] text-white hover:bg-white/10 font-medium"
-                        >
-                          <span className="block transition-all duration-200 ml-0 group-hover/simple:ml-2 group-hover/simple:text-[#1ee585]">
-                            {subItem.name}
-                          </span>
-                        </a>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
           
           {header.buttons && header.buttons.map((btn) => (
             <a
@@ -321,16 +370,34 @@ export default function Header() {
             <nav className="flex flex-col">
               {menuItems.map((item) => {
                 const isExpanded = expandedMenu === item.name;
+                const isItemActive = (() => {
+                  if (currentHash === item.href) return true;
+                  if (item.dropdownItems) {
+                    return item.dropdownItems.some(subItem => {
+                      if (currentHash === subItem.href) return true;
+                      if (subItem.submenuItems) {
+                        return subItem.submenuItems.some(nestedItem => currentHash === nestedItem.href);
+                      }
+                      return false;
+                    });
+                  }
+                  return false;
+                })();
+
                 return (
                   <div key={item.name} className="border-b border-white/5 py-1">
                     {/* Level 1 Parent Link / Accordion Control Button */}
                     {item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0 ? (
                       <button
                         onClick={() => toggleMenu(item.name)}
-                        className="w-full flex items-center justify-between py-3 px-4 text-left font-medium text-[#f3f4f6] hover:text-white hover:bg-white/5 rounded-xl transition-all cursor-pointer text-[16px] tracking-wide"
+                        className={`w-full flex items-center justify-between py-3 px-4 text-left font-medium ${
+                          isItemActive ? "bg-white text-[#2E6FA8] font-bold shadow-sm" : "text-[#f3f4f6] hover:text-white hover:bg-[#243D7A]"
+                        } rounded-xl transition-all cursor-pointer text-[16px] tracking-wide`}
                       >
                         <span className="tracking-tight uppercase">{item.name}</span>
-                        <ChevronDown className={`w-4 h-4 text-slate-300 transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+                          isItemActive ? "text-[#2E6FA8]" : "text-slate-300"
+                        } ${isExpanded ? "rotate-180" : ""}`} />
                       </button>
                     ) : (
                       <a
@@ -354,7 +421,9 @@ export default function Header() {
                             window.location.hash = item.href;
                           }
                         }}
-                        className="block py-3 px-4 font-medium text-[#f3f4f6] hover:text-white hover:bg-white/5 rounded-xl transition-all text-[16px] tracking-wide"
+                        className={`block py-3 px-4 font-medium ${
+                          isItemActive ? "bg-white text-[#2E6FA8] font-bold shadow-sm" : "text-[#f3f4f6] hover:text-white hover:bg-[#243D7A]"
+                        } rounded-xl transition-all text-[16px] tracking-wide`}
                       >
                         <span className="tracking-tight uppercase">{item.name}</span>
                       </a>
@@ -362,9 +431,10 @@ export default function Header() {
 
                     {/* Level 2 Submenus container (Initially Closed, toggles on parent click) */}
                     {item.hasDropdown && item.dropdownItems && isExpanded && (
-                      <div className="mt-1 ml-4 pl-3 border-l-2 border-indigo-500/40   flex flex-col gap-1 py-1.5 bg-[#1b456a]/80 rounded-xl overflow-hidden transition-all duration-300">
+                      <div className="mt-1 ml-4 pl-3 border-l-2 border-indigo-500/40 flex flex-col gap-1 py-1.5 bg-[#1b456a]/80 rounded-xl overflow-hidden transition-all duration-300">
                         {item.dropdownItems.map((subItem) => {
                            const isSubExpanded = expandedSubmenu === subItem.name;
+                           const isSubActive = currentHash === subItem.href || (subItem.submenuItems && subItem.submenuItems.some(nestedItem => currentHash === nestedItem.href));
                            return (
                              <div key={subItem.name} className="flex flex-col">
                                {subItem.hasSubmenu && subItem.submenuItems && subItem.submenuItems.length > 0 ? (
@@ -372,43 +442,50 @@ export default function Header() {
                                    {/* Submenu Trigger (Closed by default, click opens it) */}
                                    <button
                                      onClick={() => toggleSubmenu(subItem.name)}
-                                     className="w-full flex items-center justify-between px-4 py-2.5 text-[16px] text-[#d1d5db] hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer font-medium"
+                                     className={`w-full flex items-center justify-between px-4 py-2.5 text-[16px] ${
+                                       isSubActive ? "text-white bg-white/15 font-bold border-l-2 border-white" : "text-[#d1d5db] hover:text-white hover:bg-[#243D7A]"
+                                     } rounded-lg transition-all cursor-pointer font-medium`}
                                    >
-                                     <span>• {subItem.name}</span>
+                                     <span className="transition-transform duration-200 hover:translate-x-1 inline-block">• {subItem.name}</span>
                                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${isSubExpanded ? "rotate-180" : ""}`} />
                                    </button>
-
+  
                                    {/* Level 3 Sub-submenu Items (Initially Closed, toggles on click) */}
                                    {isSubExpanded && (
                                      <div className="ml-5 pl-3 mt-1 mb-1 border-l border-indigo-400/30 flex flex-col gap-1.5 py-1 bg-[#0a1b2a]/95 rounded-lg">
-                                       {subItem.submenuItems.map((nestedItem) => (
-                                         <a
-                                           key={nestedItem.name}
-                                           href={nestedItem.href}
-                                           onClick={(e) => {
-                                             if (handlePageNavigationClick(nestedItem.href, e)) return;
-                                             const nestedId = nestedItem.href.replace("#", "");
-                                             const isPageRoute = isSubpageId(nestedId);
-                                             const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
-
-                                             if (!isPageRoute && !wasPageRoute) {
-                                               e.preventDefault();
-                                               closeDrawer();
-                                               const element = document.getElementById(nestedId);
-                                               if (element) {
-                                                 element.scrollIntoView({ behavior: "smooth" });
+                                       {subItem.submenuItems.map((nestedItem) => {
+                                         const isNestedActive = currentHash === nestedItem.href;
+                                         return (
+                                           <a
+                                             key={nestedItem.name}
+                                             href={nestedItem.href}
+                                             onClick={(e) => {
+                                               if (handlePageNavigationClick(nestedItem.href, e)) return;
+                                               const nestedId = nestedItem.href.replace("#", "");
+                                               const isPageRoute = isSubpageId(nestedId);
+                                               const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
+  
+                                               if (!isPageRoute && !wasPageRoute) {
+                                                 e.preventDefault();
+                                                 closeDrawer();
+                                                 const element = document.getElementById(nestedId);
+                                                 if (element) {
+                                                   element.scrollIntoView({ behavior: "smooth" });
+                                                 }
+                                                 window.location.hash = nestedItem.href;
+                                               } else {
+                                                 closeDrawer();
+                                                 window.location.hash = nestedItem.href;
                                                }
-                                               window.location.hash = nestedItem.href;
-                                             } else {
-                                               closeDrawer();
-                                               window.location.hash = nestedItem.href;
-                                             }
-                                           }}
-                                           className="block px-4 py-1.5 text-[16px] text-slate-300 hover:text-white hover:bg-white/5 rounded transition-all font-medium"
-                                         >
-                                           — {nestedItem.name}
-                                         </a>
-                                       ))}
+                                             }}
+                                             className={`block px-4 py-1.5 text-[16px] ${
+                                               isNestedActive ? "text-white bg-white/15 font-bold border-l-2 border-white" : "text-slate-300 hover:text-white hover:bg-[#243D7A]"
+                                             } rounded transition-all font-medium`}
+                                           >
+                                             <span className="transition-transform duration-200 hover:translate-x-1 inline-block">— {nestedItem.name}</span>
+                                           </a>
+                                         );
+                                       })}
                                      </div>
                                    )}
                                  </>
@@ -420,7 +497,7 @@ export default function Header() {
                                      const subId = subItem.href.replace("#", "");
                                      const isPageRoute = isSubpageId(subId);
                                      const wasPageRoute = isSubpageId(window.location.hash.replace("#", ""));
-
+  
                                      if (!isPageRoute && !wasPageRoute) {
                                        e.preventDefault();
                                        closeDrawer();
@@ -434,9 +511,11 @@ export default function Header() {
                                        window.location.hash = subItem.href;
                                      }
                                    }}
-                                   className="block px-4 py-2.5 text-[16px] text-[#d1d5db] hover:text-white hover:bg-white/5 rounded-lg transition-all font-medium"
+                                   className={`block px-4 py-2.5 text-[16px] ${
+                                     isSubActive ? "text-white bg-white/15 font-bold border-l-2 border-white" : "text-[#d1d5db] hover:text-white hover:bg-[#243D7A]"
+                                   } rounded-lg transition-all font-medium`}
                                  >
-                                   • {subItem.name}
+                                   <span className="transition-transform duration-200 hover:translate-x-1 inline-block">• {subItem.name}</span>
                                  </a>
                                )}
                              </div>

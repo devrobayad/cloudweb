@@ -24,6 +24,7 @@ import Testimonial from "./components/Testimonial";
 import Contact from "./components/Contact";
 import News from "./components/News";
 import Footer from "./components/Footer";
+import Stats from "./components/Stats";
 import VideoGallery from "./components/VideoGallery";
 import PhotoGallery from "./components/PhotoGallery";
 import SolutionDetailPage from "./components/SolutionDetailPage";
@@ -301,6 +302,9 @@ export default function App() {
           <News />
         </main>
       )}
+
+      {/* Core Company Counter Numbers Section matching design photo */}
+      {currentPage === "home" && <Stats />}
 
       {/* Contact information & Footer controls */}
       <Footer />

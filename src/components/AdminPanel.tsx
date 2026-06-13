@@ -5830,11 +5830,7 @@ export default function AdminPanel() {
                             {/* Logo */}
                             {siteMetadata.preloaderLogo ? (
                               <img referrerPolicy="no-referrer" src={siteMetadata.preloaderLogo} alt="Admin Preview" className={`h-10 w-10 object-contain rounded-lg ${siteMetadata.preloaderPreset === "pulse" ? "animate-pulse" : ""}`} />
-                            ) : (
-                              <div className={`w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-[10px] font-black select-none ${siteMetadata.preloaderPreset === "pulse" ? "animate-pulse" : ""}`}>
-                                {headerConfig.logoText || "CTL"}
-                              </div>
-                            )}
+                            ) : null}
 
                             {/* Center style */}
                             <div className="h-6 flex items-center justify-center">
@@ -5923,7 +5919,6 @@ export default function AdminPanel() {
                         <label className="block text-slate-500 text-[10.5px] uppercase font-bold tracking-wider mb-1.5 font-sans">Navbar Logo Abbreviation</label>
                         <input
                           type="text"
-                          required
                           value={headerConfig.logoText}
                           onChange={(e) => setHeaderConfig({ ...headerConfig, logoText: e.target.value })}
                           className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -5935,7 +5930,6 @@ export default function AdminPanel() {
                         <label className="block text-slate-500 text-[10.5px] uppercase font-bold tracking-wider mb-1.5 font-sans">Branding Primary Row (Title)</label>
                         <input
                           type="text"
-                          required
                           value={headerConfig.companyNameRow1}
                           onChange={(e) => setHeaderConfig({ ...headerConfig, companyNameRow1: e.target.value })}
                           className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -5947,7 +5941,6 @@ export default function AdminPanel() {
                         <label className="block text-slate-500 text-[10.5px] uppercase font-bold tracking-wider mb-1.5 font-sans">Branding Secondary Row (Subtitle)</label>
                         <input
                           type="text"
-                          required
                           value={headerConfig.companyNameRow2}
                           onChange={(e) => setHeaderConfig({ ...headerConfig, companyNameRow2: e.target.value })}
                           className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-600"
